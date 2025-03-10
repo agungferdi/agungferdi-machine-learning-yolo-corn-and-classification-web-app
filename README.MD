@@ -1,11 +1,42 @@
-Collecting workspace information# Corn Kernel Detection and Classification
-
-A Flask web application that uses YOLO object detection to identify and count different types of corn kernels in images.
-
 ## Project Description
 
 This application allows users to upload images or capture images from a camera, then uses a trained YOLO model to detect and classify corn kernels into categories (black, corn, white, and fragments). It provides count statistics for each category and maintains a cumulative count.
 
+## Documentation
+
+### Application Interface
+![Application Interface](images/results-example.jpg)
+
+The application provides a simple web interface where users can upload images or capture photos using their camera. The processed images are displayed along with classification results.
+
+### Detection Results
+![Classification Results](images/interface-example.png)
+
+After processing, the application displays the analyzed image with detected corn kernels and a detailed breakdown of kernel counts by category:
+
+| Category | Description |
+|----------|-------------|
+| Good Seeds | Healthy corn kernels with no infection |
+| Aspergillus niger | Kernels infected with the Aspergillus niger fungus, a common mycotoxin-producing mold that appears as black spots |
+| Penicillium | Kernels infected with Penicillium fungi, which typically appears as blue-green or black mold on corn |
+| Corn Fragments | Broken or partial corn kernel pieces |
+| Total Seeds | The total count of all detected kernels and fragments |
+
+The application also maintains a cumulative count of detected kernels across multiple images, which can be reset as needed.
+
+### Model Information
+
+This application uses a custom-trained YOLOv8 model for corn kernel detection and classification. The model achieves impressive accuracy:
+
+- **mAP**: 99.2%
+- **Precision**: 98.2%
+- **Recall**: 97.7%
+
+#### Access the Model
+You can access, duplicate, or experiment with our model on Roboflow:  
+[Corn Detection Model](https://universe.roboflow.com/letsgo-itmav/corn_detect-3by1j/model/2)
+
+The dataset is available for download through the Roboflow platform, allowing you to train your own models or modify our approach for similar detection tasks.
 ## Setup Instructions
 
 ### Prerequisites

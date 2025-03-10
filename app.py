@@ -7,9 +7,9 @@ from ultralytics import YOLO
 
 app = Flask(__name__)
 
-UPLOAD_FOLDER = '/Users/ferdiansyahmuhammadagung/Downloads/corn_detect.v1i.yolov8/check'
-RESULTS_FOLDER = '/Users/ferdiansyahmuhammadagung/Downloads/corn_detect.v1i.yolov8/results'
-STATIC_FOLDER = '/Users/ferdiansyahmuhammadagung/Downloads/corn_detect.v1i.yolov8/static'
+UPLOAD_FOLDER = '/Users/ferdiansyahmuhammadagung/Project Mine/Machine learning/check'
+RESULTS_FOLDER = '/Users/ferdiansyahmuhammadagung/Project Mine/Machine learning/results'
+STATIC_FOLDER = '/Users/ferdiansyahmuhammadagung/Project Mine/Machine learning/static'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['RESULTS_FOLDER'] = RESULTS_FOLDER
 app.config['STATIC_FOLDER'] = STATIC_FOLDER
@@ -18,7 +18,7 @@ app.config['STATIC_FOLDER'] = STATIC_FOLDER
 cumulative_count = 0
 
 
-model = YOLO('/Users/ferdiansyahmuhammadagung/Downloads/corn_detect.v1i.yolov8/train/runs/detect/train2/weights/best.pt')
+model = YOLO('/Users/ferdiansyahmuhammadagung/Project Mine/Machine learning/model/best.pt')
 
 @app.route('/')
 def index():
