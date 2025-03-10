@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 5fa4e6bd32c29bc1062926e8c49eed88aee64b4c
 ## Project Description
 
 This application allows users to upload images or capture images from a camera, then uses a trained YOLO model to detect and classify corn kernels into categories (black, corn, white, and fragments). It provides count statistics for each category and maintains a cumulative count.
