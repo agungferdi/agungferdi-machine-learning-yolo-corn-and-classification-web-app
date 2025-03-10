@@ -1,6 +1,4 @@
-Collecting workspace information# Corn Kernel Detection and Classification
 
-A Flask web application that uses YOLO object detection to identify and count different types of corn kernels in images.
 
 ## Project Description
 
