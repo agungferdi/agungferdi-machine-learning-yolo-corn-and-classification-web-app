@@ -1,0 +1,14 @@
+train: /Users/ferdiansyahmuhammadagung/Downloads/corn_detect.v1i.yolov8/train/images
+val: /Users/ferdiansyahmuhammadagung/Downloads/corn_detect.v1i.yolov8/valid/images
+test: /Users/ferdiansyahmuhammadagung/Downloads/corn_detect.v1i.yolov8/test/images
+
+nc: 4
+names: ['hitam', 'jagung', 'putih', 'serpihan']
+
+roboflow:
+  workspace: letsgo-itmav
+  project: corn_detect-3by1j
+  version: 1
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/letsgo-itmav/corn_detect-3by1j/dataset/1
+  

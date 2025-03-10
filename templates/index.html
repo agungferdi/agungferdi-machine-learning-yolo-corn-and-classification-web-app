@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Corn Kernel Counter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        .upload-section, .results-section {
+            margin-bottom: 20px;
+        }
+        .results-section img {
+            max-width: 90%;
+            height: auto;
+        }
+        .upload-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+        button {
+            background-color: #070a08;
+            border: none;
+            color: white;
+            padding: 12px 8px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 8px;
+            transition: background-color 0.3s, transform 0.2s;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #220360;
+            transform: scale(1.05);
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+        input[type="file"] {
+            padding: 10px;
+            border: 2px solid #000000;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        input[type="file"]:hover {
+            border-color: #002279;
+        }
+        .text {
+            display: inline-block;
+            text-align: left;
+            margin: 0 auto;
+            font-size: 18px;
+
+        }
+        .results-section {
+            text-align: center;
+            padding: 0px 0;
+        }
+        .results-section p {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin: 10px 0;
+        }
+        .results-section p:last-child {
+            font-size: 40px;
+            color: #1e002efe;
+        }
+        #resetButton {
+            display: none;
+            margin-top: 20px;
+            background-color: #000000;
+            padding: 12px 8px;
+            font-size: 16px;
+        }
+        #cumulativeCount {
+            font-size: 20px;
+            color: #1e002efe;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Corn Seeds Classifier</h1>
+        <div class="upload-section">
+            <form id="uploadForm">
+                <input type="file" id="fileInput">
+                <button type="submit">Upload Image</button>
+            </form>
+            <button id="cameraButton">Capture Camera</button>
+        </div>
+        <div class="results-section" id="resultsSection" style="display: none;">
+            <h2>Results</h2>
+            <img id="resultImage" src="" alt="Processed Image">
+            <div class="text">
+                <table id="resultsTable">
+                    <tr>
+                        <th>Category</th>
+                        <th>Count</th>
+                    </tr>
+                    <tr>
+                        <td>Good Seeds</td>
+                        <td id="goodCorn"></td>
+                    </tr>
+                    <tr>
+                        <td>Aspergillus niger</td>
+                        <td id="whiteFungus"></td>
+                    </tr>
+                    <tr>
+                        <td>Penicillium</td>
+                        <td id="blackFungus"></td>
+                    </tr>
+                    <tr>
+                        <td>Corn Fragments</td>
+                        <td id="cornFragments"></td>
+                    </tr>
+                    <tr>
+                        <td>Total Seeds</td>
+                        <td id="totalKernels"></td>
+                    </tr>
+                </table>
+            </div>
+            <p id="cumulativeCount">Cumulative Count: 0</p> <!-- Cumulative Count Display -->
+            <button id="resetButton">Reset</button> <!-- Reset button -->
+        </div>
+    </div>
+
+    <script>
+        let cumulativeCount = 0;
+        const uploadForm = document.getElementById('uploadForm');
+        const cameraButton = document.getElementById('cameraButton');
+        const resultsSection = document.getElementById('resultsSection');
+        const resultImage = document.getElementById('resultImage');
+        const goodCorn = document.getElementById('goodCorn');
+        const whiteFungus = document.getElementById('whiteFungus');
+        const blackFungus = document.getElementById('blackFungus');
+        const cornFragments = document.getElementById('cornFragments');
+        const totalKernels = document.getElementById('totalKernels');
+        const resetButton = document.getElementById('resetButton');
+        const cumulativeCountDisplay = document.getElementById('cumulativeCount'); // Cumulative count element
+
+        uploadForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData();
+            const fileInput = document.getElementById('fileInput').files[0];
+            formData.append('file', fileInput);
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => showResults(data))
+            .catch(error => console.error('Error:', error));
+        });
+
+        cameraButton.addEventListener('click', function() {
+            fetch('/camera', {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => showResults(data))
+            .catch(error => console.error('Error:', error));
+        });
+
+        resetButton.addEventListener('click', function() {
+            cumulativeCount = 0;
+            cumulativeCountDisplay.textContent = `Cumulative Count: ${cumulativeCount}`; // Reset cumulative count display
+            resetButton.style.display = 'none';
+        });
+
+        function showResults(data) {
+            if (data.error) {
+                alert(data.error);
+            } else {
+                resultImage.src = `/static/${data.image}`;
+                goodCorn.textContent = `${data.counts.jagung}`;
+                whiteFungus.textContent = `${data.counts.putih}`;
+                blackFungus.textContent = `${data.counts.hitam}`;
+                cornFragments.textContent = `${data.counts.serpihan}`;
+                totalKernels.textContent = `${data.total}`;
+
+                // Update cumulative count and display it
+                cumulativeCount += data.total;
+                cumulativeCountDisplay.textContent = `Cumulative Count: ${cumulativeCount}`;
+
+                resultsSection.style.display = 'block';
+                resetButton.style.display = 'inline-block'; // Show the reset button
+            }
+        }
+    </script>
+</body>
+</html>
